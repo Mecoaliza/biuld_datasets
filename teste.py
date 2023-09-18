@@ -24,9 +24,10 @@ def search_movie(title):
         return 
 
     try:
-        title_url = parse.urlencode({'t': title})
+        title_url = parse.urlencode({'t': title})  #http://www.omdbapi.com/?t=Barbie&y=2023 &{'y': year}
+        year_url = parse.urlencode({'y': year})
         api_key = '9019e34'
-        url = f'http://www.omdbapi.com/?{title_url}&apikey={api_key}'
+        url = f'http://www.omdbapi.com/?{title_url}&{year_url}&apikey={api_key}'
         print(f'Procurando o filme "{title}"... ')
         uh = urllib.request.urlopen(url)
         data = uh.read()
@@ -79,6 +80,7 @@ def save_in_database(movie_data):
 
 
 title = input('\nDigite o nome do filme: ')
+year = input('\nDigite o ano: ')
 if len(title) < 1 or title=='quit': 
     print("Não encontrado...")
 else:
