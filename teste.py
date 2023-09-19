@@ -4,12 +4,11 @@ from urllib import parse
 import json
 import requests
 import sqlite3
-import pandas as pd
 
 def print_json(json_data):
     list_keys=['Title', 'Year', 'Rated', 'Released', 'Runtime', 'Genre', 'Director', 'Writer', 
                'Actors', 'Plot', 'Language', 'Country', 'Awards',
-               'Metascore', 'imdbRating', 'imdbVotes', 'imdbID']
+               'Metascore', 'imdbRating', 'imdbVotes', 'imdbID', 'BoxOffice']
     print("-"*50)
     for i in list_keys:
         if i in list(json_data.keys()):
@@ -46,7 +45,7 @@ def search_movie(title):
 
 
 def save_in_database(movie_data):
-    conn = sqlite3.connect('info_movie.sqlite')
+    conn = sqlite3.connect('movie.sqlite')
     cur=conn.cursor()
 
     cur.execute ('''CREATE TABLE IF NOT EXISTS filmes (
@@ -66,15 +65,16 @@ def save_in_database(movie_data):
         metascore INTEGER,
         imdbRating REAL,
         imdbVotes TEXT,
-        imdbID TEXT
+        imdbID TEXT,
+        boxOffice TEXT
     )
 ''')
 
-    conn.execute('INSERT INTO filmes VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+    conn.execute('INSERT INTO filmes VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
              (movie_data['Title'], movie_data['Year'], movie_data['Rated'], movie_data['Released'], movie_data['Runtime'],
               movie_data['Genre'], movie_data['Director'], movie_data['Writer'], movie_data['Actors'], movie_data['Plot'],
               movie_data['Language'], movie_data['Country'], movie_data['Awards'], movie_data['Metascore'],
-              movie_data['imdbRating'], movie_data['imdbVotes'], movie_data['imdbID']))
+              movie_data['imdbRating'], movie_data['imdbVotes'], movie_data['imdbID'], movie_data['BoxOffice']))
     conn.commit()
     conn.close()
 
